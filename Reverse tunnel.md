@@ -14,9 +14,12 @@ To be filled.
 ### Client Side
 
 1. Client wasn't set to kill the ssh if forward fails. (such that service was not restart)
-  - Append ```-o ExitOnForwardFailure=yes``` to the ssh command, or add ```ExitOnForwardFailure yes``` to ~/.ssh/config (/etc/ssh/ssh_config should work as well)
+  - Append ```-o ExitOnForwardFailure=yes``` to the ssh command, or add ```ExitOnForwardFailure yes``` to ~/.ssh/config (/etc/ssh/ssh_config should work as well) [1]
 
-## Connection is dropped accidentally (probably because of stale connection or timeout)
+2. Use autossh to handle the restarting.
+  - ```autossh -M 20000 -f -N your_public_server -R 1234:localhost:22 -C```[2]
+  
+## Connection is dropped accidentally (probably because of stale connection or timeout) [3]
 
 ### Server Side
 
@@ -48,5 +51,7 @@ ServerAliveInterval 100
 **NULL packet** Is sent by the server to the client. The same packet is sent by the client to the server. A TCP NULL packet does not contain any controlling flag like SYN, ACK, FIN etc. because the server does not require a reply from the client. The NULL packet is described here: https://tools.ietf.org/html/rfc6592
 
 # Reference
-https://superuser.com/questions/352268/can-i-make-ssh-fail-when-a-port-forwarding-fails
-https://unix.stackexchange.com/questions/200239/how-can-i-keep-my-ssh-sessions-from-freezing
+
+1. https://superuser.com/questions/352268/can-i-make-ssh-fail-when-a-port-forwarding-fails
+2. https://superuser.com/questions/37738/how-to-reliably-keep-an-ssh-tunnel-open
+3. https://unix.stackexchange.com/questions/200239/how-can-i-keep-my-ssh-sessions-from-freezing
